@@ -25,29 +25,36 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 import android.view.View;
 import android.view.View.OnClickListener;
+
 import jp.co.cyberagent.android.gpuimage.sample.R;
 
+/**
+ * I am coming!
+ */
 public class ActivityMain extends Activity implements OnClickListener {
 
-    @Override public void onCreate(final Bundle savedInstanceState) {
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.button_gallery).setOnClickListener(this);
         findViewById(R.id.button_camera).setOnClickListener(this);
     }
 
-    @Override public void onClick(final View v) {
+    @Override
+    public void onClick(final View v) {
         if (PermissionChecker.checkSelfPermission(this, Manifest.permission.CAMERA)
-            == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA },
-                v.getId());
+                == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                    v.getId());
         } else {
             startActivity(v.getId());
         }
     }
 
-    @Override public void onRequestPermissionsResult(int requestCode, String[] permissions,
-        int[] grantResults) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
         if (grantResults.length != 1 || grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             startActivity(requestCode);
         } else {
