@@ -18,7 +18,7 @@ package jp.co.cyberagent.android.gpuimage.filter;
 
 import android.opengl.GLES20;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
 
 /**
  * Adjusts the individual RGB channels of an image

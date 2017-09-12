@@ -16,7 +16,7 @@
 
 package jp.co.cyberagent.android.gpuimage.filter;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
 
 public class GPUImageCGAColorspaceFilter extends GPUImageFilter {
     public static final String CGACOLORSPACE_FRAGMENT_SHADER = "" +

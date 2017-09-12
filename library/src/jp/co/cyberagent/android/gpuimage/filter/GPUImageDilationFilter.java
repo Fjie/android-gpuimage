@@ -16,7 +16,7 @@
 
 package jp.co.cyberagent.android.gpuimage.filter;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageTwoPassTextureSamplingFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageTwoPassTextureSamplingFilter;
 
 /**
  * For each pixel, this sets it to the maximum value of the red channel in a rectangular neighborhood extending

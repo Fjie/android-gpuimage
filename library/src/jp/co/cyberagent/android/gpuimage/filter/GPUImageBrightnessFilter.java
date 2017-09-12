@@ -18,7 +18,7 @@ package jp.co.cyberagent.android.gpuimage.filter;
 
 import android.opengl.GLES20;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
 
 /**
  * brightness value ranges from -1.0 to 1.0, with 0.0 as the normal level

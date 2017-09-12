@@ -16,7 +16,7 @@
 
 package jp.co.cyberagent.android.gpuimage.filter;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilterGroup;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilterGroup;
 
 /**
  *  This uses a similar process as the GPUImageToonFilter, only it precedes the toon effect

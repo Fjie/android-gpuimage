@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
 
 public class GPUImageTransformFilter extends GPUImageFilter {
     public static final String TRANSFORM_VERTEX_SHADER = "" +

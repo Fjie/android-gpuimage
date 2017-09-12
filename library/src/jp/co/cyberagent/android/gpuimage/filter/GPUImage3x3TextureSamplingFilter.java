@@ -18,7 +18,7 @@ package jp.co.cyberagent.android.gpuimage.filter;
 
 import android.opengl.GLES20;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
 
 public class GPUImage3x3TextureSamplingFilter extends GPUImageFilter {
     public static final String THREE_X_THREE_TEXTURE_SAMPLING_VERTEX_SHADER = "" +

@@ -23,6 +23,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.opengl.Matrix;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilterGroup;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImage3x3ConvolutionFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImage3x3TextureSamplingFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageAddBlendFilter;
@@ -50,8 +55,6 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageEmbossFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageExclusionBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageExposureFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFalseColorFilter;
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter;
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilterGroup;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageGammaFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageGaussianBlurFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageGlassSphereFilter;
@@ -86,7 +89,6 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSharpenFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSketchFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSmoothToonFilter;
-import jp.co.cyberagent.android.gpuimage.util.GPUImageSobelEdgeDetection;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSoftLightBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSourceOverBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSphereRefractionFilter;
@@ -99,14 +101,14 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageTwoInputFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageVignetteFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageWeakPixelInclusionFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageWhiteBalanceFilter;
-
-import java.util.LinkedList;
-import java.util.List;
+import jp.co.cyberagent.android.gpuimage.filter.custom.DoubleFilter;
+import jp.co.cyberagent.android.gpuimage.util.GPUImageSobelEdgeDetection;
 
 public class GPUImageFilterTools {
     public static void showDialog(final Context context,
             final OnGpuImageFilterChosenListener listener) {
         final FilterList filters = new FilterList();
+        filters.addFilter("Me!Me!Me!", FilterType.DOUBLE);
         filters.addFilter("Contrast", FilterType.CONTRAST);
         filters.addFilter("Invert", FilterType.INVERT);
         filters.addFilter("Pixelation", FilterType.PIXELATION);
@@ -204,6 +206,8 @@ public class GPUImageFilterTools {
 
     private static GPUImageFilter createFilterForType(final Context context, final FilterType type) {
         switch (type) {
+            case DOUBLE:
+                return new DoubleFilter();
             case CONTRAST:
                 return new GPUImageContrastFilter(2.0f);
             case GAMMA:
@@ -327,7 +331,6 @@ public class GPUImageFilterTools {
                 return new GPUImageGaussianBlurFilter();
             case CROSSHATCH:
                 return new GPUImageCrosshatchFilter();
-
             case BOX_BLUR:
                 return new GPUImageBoxBlurFilter();
             case CGA_COLORSPACE:
@@ -400,7 +403,7 @@ public class GPUImageFilterTools {
     }
 
     private enum FilterType {
-        CONTRAST, GRAYSCALE, SHARPEN, SEPIA, SOBEL_EDGE_DETECTION, THREE_X_THREE_CONVOLUTION, FILTER_GROUP, EMBOSS, POSTERIZE, GAMMA, BRIGHTNESS, INVERT, HUE, PIXELATION,
+        DOUBLE,CONTRAST, GRAYSCALE, SHARPEN, SEPIA, SOBEL_EDGE_DETECTION, THREE_X_THREE_CONVOLUTION, FILTER_GROUP, EMBOSS, POSTERIZE, GAMMA, BRIGHTNESS, INVERT, HUE, PIXELATION,
         SATURATION, EXPOSURE, HIGHLIGHT_SHADOW, MONOCHROME, OPACITY, RGB, WHITE_BALANCE, VIGNETTE, TONE_CURVE, BLEND_COLOR_BURN, BLEND_COLOR_DODGE, BLEND_DARKEN, BLEND_DIFFERENCE,
         BLEND_DISSOLVE, BLEND_EXCLUSION, BLEND_SOURCE_OVER, BLEND_HARD_LIGHT, BLEND_LIGHTEN, BLEND_ADD, BLEND_DIVIDE, BLEND_MULTIPLY, BLEND_OVERLAY, BLEND_SCREEN, BLEND_ALPHA,
         BLEND_COLOR, BLEND_HUE, BLEND_SATURATION, BLEND_LUMINOSITY, BLEND_LINEAR_BURN, BLEND_SOFT_LIGHT, BLEND_SUBTRACT, BLEND_CHROMA_KEY, BLEND_NORMAL, LOOKUP_AMATORKA,

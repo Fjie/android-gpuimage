@@ -16,7 +16,7 @@
 
 package jp.co.cyberagent.android.gpuimage.filter;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageTwoPassTextureSamplingFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageTwoPassTextureSamplingFilter;
 
 /**
  * A hardware-accelerated 9-hit box blur of an image

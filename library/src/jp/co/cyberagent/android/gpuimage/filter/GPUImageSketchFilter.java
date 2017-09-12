@@ -16,7 +16,7 @@
 
 package jp.co.cyberagent.android.gpuimage.filter;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilterGroup;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilterGroup;
 
 /**
  * Converts video to look like a sketch.

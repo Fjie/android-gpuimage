@@ -16,7 +16,7 @@
 
 package jp.co.cyberagent.android.gpuimage.filter;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageTwoPassTextureSamplingFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageTwoPassTextureSamplingFilter;
 
 /**
  * A more generalized 9x9 Gaussian blur filter

@@ -19,7 +19,7 @@ package jp.co.cyberagent.android.gpuimage.filter;
 import android.graphics.PointF;
 import android.opengl.GLES20;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
 
 public class GPUImageSphereRefractionFilter extends GPUImageFilter {
     public static final String SPHERE_FRAGMENT_SHADER = "" +

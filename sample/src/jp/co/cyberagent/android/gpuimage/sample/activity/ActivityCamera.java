@@ -41,7 +41,7 @@ import java.util.Date;
 
 import jp.co.cyberagent.android.gpuimage.core.GPUImage;
 import jp.co.cyberagent.android.gpuimage.core.GPUImage.OnPictureSavedListener;
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.sample.GPUImageFilterTools;
 import jp.co.cyberagent.android.gpuimage.sample.GPUImageFilterTools.FilterAdjuster;
 import jp.co.cyberagent.android.gpuimage.sample.GPUImageFilterTools.OnGpuImageFilterChosenListener;

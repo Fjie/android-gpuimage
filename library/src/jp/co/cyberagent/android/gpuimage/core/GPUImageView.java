@@ -25,6 +25,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.*;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
@@ -36,11 +37,12 @@ import java.io.FileOutputStream;
 import java.nio.IntBuffer;
 import java.util.concurrent.Semaphore;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.util.Rotation;
 
 // TODO: 2017/9/12 包装类？
 public class GPUImageView extends FrameLayout {
+
+    private static final String TAG = "GPUImageView";
 
     private GLSurfaceView mGLSurfaceView;// TODO: 2017/9/12 渲染插件
     private GPUImage mGPUImage;// TODO: 2017/9/12 主插件
@@ -59,7 +61,7 @@ public class GPUImageView extends FrameLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        mGLSurfaceView = new GPUImageGLSurfaceView(context, attrs);
+        mGLSurfaceView = new GPUImageGLSurfaceView(context, attrs);// TODO: 2017/9/12 渲染View与自己相同的属性、布局
         addView(mGLSurfaceView);
         mGPUImage = new GPUImage(getContext());
         mGPUImage.setGLSurfaceView(mGLSurfaceView);
@@ -106,7 +108,7 @@ public class GPUImageView extends FrameLayout {
      * @param blue red color value
      */
     public void setBackgroundColor(float red, float green, float blue) {
-        mGPUImage.setBackgroundColor(red, green, blue);
+        mGPUImage.setBackgroundColor(red, green, blue);// TODO: 2017/9/12 传递清屏颜色
     }
 
     // TODO Should be an xml attribute. But then GPUImage can not be distributed as .jar anymore.
@@ -142,7 +144,7 @@ public class GPUImageView extends FrameLayout {
      */
     public void setFilter(GPUImageFilter filter) {
         mFilter = filter;
-        mGPUImage.setFilter(filter);
+        mGPUImage.setFilter(filter);// TODO: 2017/9/12 传递滤镜
         requestRender();
     }
 
@@ -162,7 +164,7 @@ public class GPUImageView extends FrameLayout {
      */
     public void setImage(final Bitmap bitmap) {
         mGPUImage.setImage(bitmap);
-    }
+    }// TODO: 2017/9/12 传递位图
 
     /**
      * Sets the image on which the filter should be applied from a Uri.
@@ -184,7 +186,7 @@ public class GPUImageView extends FrameLayout {
 
     public void requestRender() {
         mGLSurfaceView.requestRender();
-    }
+    }// TODO: 2017/9/12 通知渲染
 
     /**
      * Save current image with applied filter to Pictures. It will be stored on
@@ -199,7 +201,7 @@ public class GPUImageView extends FrameLayout {
      */
     public void saveToPictures(final String folderName, final String fileName,
                                final OnPictureSavedListener listener) {
-        new SaveTask(folderName, fileName, listener).execute();
+        new SaveTask(folderName, fileName, listener).execute(); // TODO: 2017/9/12 保存到图片
     }
 
     /**
@@ -229,6 +231,7 @@ public class GPUImageView extends FrameLayout {
      * @return Bitmap of picture with given size
      * @throws InterruptedException
      */
+    // TODO: 2017/9/12 保存图片的时候使用到，读取缓存区帧对象
     public Bitmap capture(final int width, final int height) throws InterruptedException {
         // This method needs to run on a background thread because it will take a longer time
         if (Looper.myLooper() == Looper.getMainLooper()) {
@@ -239,7 +242,7 @@ public class GPUImageView extends FrameLayout {
 
         final Semaphore waiter = new Semaphore(0);
 
-        // Layout with new size
+        // Layout with new size //
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -269,9 +272,9 @@ public class GPUImageView extends FrameLayout {
                 waiter.release();
             }
         });
-        requestRender();
+        requestRender();// TODO: 2017/9/12 一番操作后通知渲染
         waiter.acquire();
-        Bitmap bitmap = capture();
+        Bitmap bitmap = capture();// TODO: 2017/9/12 正式缩放
 
 
         mForceSize = null;
@@ -300,22 +303,25 @@ public class GPUImageView extends FrameLayout {
      * @throws InterruptedException
      */
     public Bitmap capture() throws InterruptedException {
-        final Semaphore waiter = new Semaphore(0);
+        final Semaphore waiter = new Semaphore(0);// TODO: 2017/9/12 毛玩意儿？
 
+        // TODO: 2017/9/12 获取渲染View的大小
         final int width = mGLSurfaceView.getMeasuredWidth();
         final int height = mGLSurfaceView.getMeasuredHeight();
 
-        // Take picture on OpenGL thread
+        // Take picture on OpenGL thread // TODO: 2017/9/12 依赖OpenGL 实施缩放
         final int[] pixelMirroredArray = new int[width * height];
         mGPUImage.runOnGLThread(new Runnable() {
             @Override
             public void run() {
                 final IntBuffer pixelBuffer = IntBuffer.allocate(width * height);
+                // TODO: 2017/9/12 读取缓冲区数据
                 GLES20.glReadPixels(0, 0, width, height, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, pixelBuffer);
                 int[] pixelArray = pixelBuffer.array();
+                Log.d(TAG, "run: pixelArray = " + pixelArray);
 
                 // Convert upside down mirror-reversed image to right-side up normal image.
-                for (int i = 0; i < height; i++) {
+                for (int i = 0; i < height; i++) {// TODO: 2017/9/12 还原镜像后的图像
                     for (int j = 0; j < width; j++) {
                         pixelMirroredArray[(height - i - 1) * width + j] = pixelArray[i * width + j];
                     }
@@ -327,8 +333,79 @@ public class GPUImageView extends FrameLayout {
         waiter.acquire();
 
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        bitmap.copyPixelsFromBuffer(IntBuffer.wrap(pixelMirroredArray));
+        bitmap.copyPixelsFromBuffer(IntBuffer.wrap(pixelMirroredArray));// TODO: 2017/9/12 保存图像
         return bitmap;
+    }
+
+
+    // TODO: 2017/9/12 保存图片异步类
+    private class SaveTask extends AsyncTask<Void, Void, Void> {
+        private final String mFolderName;
+        private final String mFileName;
+        private final int mWidth;
+        private final int mHeight;
+        private final OnPictureSavedListener mListener;
+        private final Handler mHandler;
+
+        public SaveTask(final String folderName, final String fileName,
+                        final OnPictureSavedListener listener) {
+            this(folderName, fileName, 0, 0, listener);
+        }
+
+        public SaveTask(final String folderName, final String fileName, int width, int height,
+                        final OnPictureSavedListener listener) {
+            mFolderName = folderName;
+            mFileName = fileName;
+            mWidth = width;
+            mHeight = height;
+            mListener = listener;
+            mHandler = new Handler();
+        }
+
+        @Override
+        protected Void doInBackground(final Void... params) {
+            try {
+                Bitmap result = mWidth != 0 ? capture(mWidth, mHeight) : capture();
+                saveImage(mFolderName, mFileName, result);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        private void saveImage(final String folderName, final String fileName, final Bitmap image) {
+            File path = Environment
+                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            File file = new File(path, folderName + "/" + fileName);
+            try {
+                file.getParentFile().mkdirs();
+                image.compress(Bitmap.CompressFormat.JPEG, 80, new FileOutputStream(file));
+                MediaScannerConnection.scanFile(getContext(),
+                        new String[]{
+                                file.toString()
+                        }, null,
+                        new MediaScannerConnection.OnScanCompletedListener() {
+                            @Override
+                            public void onScanCompleted(final String path, final Uri uri) {
+                                if (mListener != null) {
+                                    mHandler.post(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                            mListener.onPictureSaved(uri);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public interface OnPictureSavedListener {
+        void onPictureSaved(Uri uri);
     }
 
     /**
@@ -398,74 +475,5 @@ public class GPUImageView extends FrameLayout {
             addView(view);
             setBackgroundColor(Color.BLACK);
         }
-    }
-
-    private class SaveTask extends AsyncTask<Void, Void, Void> {
-        private final String mFolderName;
-        private final String mFileName;
-        private final int mWidth;
-        private final int mHeight;
-        private final OnPictureSavedListener mListener;
-        private final Handler mHandler;
-
-        public SaveTask(final String folderName, final String fileName,
-                        final OnPictureSavedListener listener) {
-            this(folderName, fileName, 0, 0, listener);
-        }
-
-        public SaveTask(final String folderName, final String fileName, int width, int height,
-                        final OnPictureSavedListener listener) {
-            mFolderName = folderName;
-            mFileName = fileName;
-            mWidth = width;
-            mHeight = height;
-            mListener = listener;
-            mHandler = new Handler();
-        }
-
-        @Override
-        protected Void doInBackground(final Void... params) {
-            try {
-                Bitmap result = mWidth != 0 ? capture(mWidth, mHeight) : capture();
-                saveImage(mFolderName, mFileName, result);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        private void saveImage(final String folderName, final String fileName, final Bitmap image) {
-            File path = Environment
-                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            File file = new File(path, folderName + "/" + fileName);
-            try {
-                file.getParentFile().mkdirs();
-                image.compress(Bitmap.CompressFormat.JPEG, 80, new FileOutputStream(file));
-                MediaScannerConnection.scanFile(getContext(),
-                        new String[]{
-                                file.toString()
-                        }, null,
-                        new MediaScannerConnection.OnScanCompletedListener() {
-                            @Override
-                            public void onScanCompleted(final String path, final Uri uri) {
-                                if (mListener != null) {
-                                    mHandler.post(new Runnable() {
-
-                                        @Override
-                                        public void run() {
-                                            mListener.onPictureSaved(uri);
-                                        }
-                                    });
-                                }
-                            }
-                        });
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public interface OnPictureSavedListener {
-        void onPictureSaved(Uri uri);
     }
 }

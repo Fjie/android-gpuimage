@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.cyberagent.android.gpuimage.filter.base;
+package jp.co.cyberagent.android.gpuimage.core;
 
 import android.opengl.GLES20;
 

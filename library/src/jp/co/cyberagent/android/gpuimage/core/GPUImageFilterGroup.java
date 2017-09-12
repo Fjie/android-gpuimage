@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package jp.co.cyberagent.android.gpuimage.filter.base;
+package jp.co.cyberagent.android.gpuimage.core;
 
 import android.annotation.SuppressLint;
 import android.opengl.GLES20;
-
-import jp.co.cyberagent.android.gpuimage.util.Rotation;
-import jp.co.cyberagent.android.gpuimage.util.TextureRotationUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
+
+import jp.co.cyberagent.android.gpuimage.util.Rotation;
+import jp.co.cyberagent.android.gpuimage.util.TextureRotationUtil;
 
 import static jp.co.cyberagent.android.gpuimage.core.GPUImageRenderer.CUBE;
 import static jp.co.cyberagent.android.gpuimage.util.TextureRotationUtil.TEXTURE_NO_ROTATION;
@@ -93,7 +93,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
 
     /*
      * (non-Javadoc)
-     * @see jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter#onInit()
+     * @see jp.co.cyberagent.android.gpuimage.core.GPUImageFilter#onInit()
      */
     @Override
     public void onInit() {
@@ -105,7 +105,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
 
     /*
      * (non-Javadoc)
-     * @see jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter#onDestroy()
+     * @see jp.co.cyberagent.android.gpuimage.core.GPUImageFilter#onDestroy()
      */
     @Override
     public void onDestroy() {
@@ -130,7 +130,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     /*
      * (non-Javadoc)
      * @see
-     * jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter#onOutputSizeChanged(int,
+     * jp.co.cyberagent.android.gpuimage.core.GPUImageFilter#onOutputSizeChanged(int,
      * int)
      */
     @Override
@@ -177,7 +177,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
 
     /*
      * (non-Javadoc)
-     * @see jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter#onDraw(int,
+     * @see jp.co.cyberagent.android.gpuimage.core.GPUImageFilter#onDraw(int,
      * java.nio.FloatBuffer, java.nio.FloatBuffer)
      */
     @SuppressLint("WrongCall")    

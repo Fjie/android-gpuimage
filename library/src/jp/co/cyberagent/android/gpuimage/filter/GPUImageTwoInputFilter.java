@@ -16,16 +16,17 @@
 
 package jp.co.cyberagent.android.gpuimage.filter;
 
+import android.graphics.Bitmap;
+import android.opengl.GLES20;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.util.OpenGlUtils;
 import jp.co.cyberagent.android.gpuimage.util.Rotation;
 import jp.co.cyberagent.android.gpuimage.util.TextureRotationUtil;
-import android.graphics.Bitmap;
-import android.opengl.GLES20;
 
 public class GPUImageTwoInputFilter extends GPUImageFilter {
     private static final String VERTEX_SHADER = "attribute vec4 position;\n" +

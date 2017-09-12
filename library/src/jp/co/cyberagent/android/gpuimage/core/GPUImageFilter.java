@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.cyberagent.android.gpuimage.filter.base;
+package jp.co.cyberagent.android.gpuimage.core;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -27,6 +27,7 @@ import java.util.LinkedList;
 
 import jp.co.cyberagent.android.gpuimage.util.OpenGlUtils;
 
+// TODO: 2017/9/12 滤镜基类
 public class GPUImageFilter {
     public static final String NO_FILTER_VERTEX_SHADER = "" +
             "attribute vec4 position;\n" +
@@ -49,16 +50,16 @@ public class GPUImageFilter {
             "     gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\n" +
             "}";
 
-    private final LinkedList<Runnable> mRunOnDraw;
-    private final String mVertexShader;
+    private final LinkedList<Runnable> mRunOnDraw;// TODO: 2017/9/12 全家桶套路
+    private final String mVertexShader;// TODO: 2017/9/12 着色器
     private final String mFragmentShader;
-    protected int mGLProgId;
-    protected int mGLAttribPosition;
-    protected int mGLUniformTexture;
-    protected int mGLAttribTextureCoordinate;
+    protected int mGLProgId;// TODO: 2017/9/12 管线句柄
+    protected int mGLAttribPosition;// TODO: 2017/9/12 顶点变量句柄
+    protected int mGLUniformTexture;// TODO: 2017/9/12 纹理变量句柄
+    protected int mGLAttribTextureCoordinate;// TODO: 2017/9/12 纹理坐标变量句柄
     protected int mOutputWidth;
     protected int mOutputHeight;
-    private boolean mIsInitialized;
+    private boolean mIsInitialized;// TODO: 2017/9/12 可绘制开关
 
     public GPUImageFilter() {
         this(NO_FILTER_VERTEX_SHADER, NO_FILTER_FRAGMENT_SHADER);
@@ -70,13 +71,14 @@ public class GPUImageFilter {
         mFragmentShader = fragmentShader;
     }
 
+    // TODO: 2017/9/12 外部调用方法，入口
     public final void init() {
         onInit();
-        mIsInitialized = true;
+        mIsInitialized = true;// TODO: 2017/9/12 打开开关
         onInitialized();
     }
 
-    public void onInit() {
+    public void onInit() {// TODO: 2017/9/12 初始化主体方法，GLSL配置、传参，子类定制化配置
         mGLProgId = OpenGlUtils.loadProgram(mVertexShader, mFragmentShader);
         mGLAttribPosition = GLES20.glGetAttribLocation(mGLProgId, "position");
         mGLUniformTexture = GLES20.glGetUniformLocation(mGLProgId, "inputImageTexture");
@@ -101,22 +103,24 @@ public class GPUImageFilter {
         mOutputHeight = height;
     }
 
+    // TODO: 2017/9/12 OpenGL绘制，传入纹理句柄、顶点buf、纹理顶点buf
     public void onDraw(final int textureId, final FloatBuffer cubeBuffer,
                        final FloatBuffer textureBuffer) {
-        GLES20.glUseProgram(mGLProgId);
-        runPendingOnDrawTasks();
+        GLES20.glUseProgram(mGLProgId);// TODO: 2017/9/12 使用通道
+        runPendingOnDrawTasks();// TODO: 2017/9/12 先处理全家桶
         if (!mIsInitialized) {
             return;
         }
-
+        // TODO: 2017/9/12 处理顶点
         cubeBuffer.position(0);
         GLES20.glVertexAttribPointer(mGLAttribPosition, 2, GLES20.GL_FLOAT, false, 0, cubeBuffer);
         GLES20.glEnableVertexAttribArray(mGLAttribPosition);
+        // TODO: 2017/9/12 处理纹理顶点
         textureBuffer.position(0);
-        GLES20.glVertexAttribPointer(mGLAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0,
-                textureBuffer);
+        GLES20.glVertexAttribPointer(mGLAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0,textureBuffer);
         GLES20.glEnableVertexAttribArray(mGLAttribTextureCoordinate);
         if (textureId != OpenGlUtils.NO_TEXTURE) {
+            // TODO: 2017/9/12 应用纹理
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId);
             GLES20.glUniform1i(mGLUniformTexture, 0);
@@ -130,6 +134,7 @@ public class GPUImageFilter {
 
     protected void onDrawArraysPre() {}
 
+    // TODO: 2017/9/12 绘制前处理全家桶
     protected void runPendingOnDrawTasks() {
         while (!mRunOnDraw.isEmpty()) {
             mRunOnDraw.removeFirst().run();
@@ -163,6 +168,8 @@ public class GPUImageFilter {
     public int getUniformTexture() {
         return mGLUniformTexture;
     }
+
+    // TODO: 2017/9/12 一系列传递属性的方法
 
     protected void setInteger(final int location, final int intValue) {
         runOnDraw(new Runnable() {

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.util.OpenGlUtils;
 
 public class GPUImageToneCurveFilter extends GPUImageFilter {

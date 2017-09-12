@@ -43,7 +43,6 @@ import java.io.*;
 import java.net.URL;
 import java.util.List;
 
-import jp.co.cyberagent.android.gpuimage.filter.base.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.util.PixelBuffer;
 import jp.co.cyberagent.android.gpuimage.util.Rotation;
 
@@ -51,12 +50,13 @@ import jp.co.cyberagent.android.gpuimage.util.Rotation;
  * The main accessor for GPUImage functionality. This class helps to do common
  * tasks through a simple interface.
  */
+// TODO: 2017/9/12 主要控制类
 public class GPUImage {
     private final Context mContext;
-    private final GPUImageRenderer mRenderer;
-    private GLSurfaceView mGlSurfaceView;
-    private GPUImageFilter mFilter;
-    private Bitmap mCurrentBitmap;
+    private final GPUImageRenderer mRenderer;// TODO: 2017/9/12 渲染插件
+    private GLSurfaceView mGlSurfaceView;// TODO: 2017/9/12 渲染view
+    private GPUImageFilter mFilter;// TODO: 2017/9/12 滤镜
+    private Bitmap mCurrentBitmap;// TODO: 2017/9/12 基于位图操作？
     private ScaleType mScaleType = ScaleType.CENTER_CROP;
 
     /**
@@ -71,7 +71,7 @@ public class GPUImage {
 
         mContext = context;
         mFilter = new GPUImageFilter();
-        mRenderer = new GPUImageRenderer(mFilter);
+        mRenderer = new GPUImageRenderer(mFilter);// TODO: 2017/9/12 渲染器持有滤镜
     }
 
     /**
@@ -93,6 +93,7 @@ public class GPUImage {
      *
      * @param view the GLSurfaceView
      */
+    // TODO: 2017/9/12 配置渲染view
     public void setGLSurfaceView(final GLSurfaceView view) {
         mGlSurfaceView = view;
         mGlSurfaceView.setEGLContextClientVersion(2);
@@ -111,7 +112,7 @@ public class GPUImage {
      * @param blue red color value
      */
     public void setBackgroundColor(float red, float green, float blue) {
-        mRenderer.setBackgroundColor(red, green, blue);
+        mRenderer.setBackgroundColor(red, green, blue);// TODO: 2017/9/12 传递清屏颜色
     }
 
     /**
@@ -140,13 +141,14 @@ public class GPUImage {
      * @param flipHorizontal if the image should be flipped horizontally
      * @param flipVertical if the image should be flipped vertically
      */
+    // TODO: 2017/9/12 设置相机
     public void setUpCamera(final Camera camera, final int degrees, final boolean flipHorizontal,
             final boolean flipVertical) {
-        mGlSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+        mGlSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);// TODO: 2017/9/12 重置渲染模式为不间断
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
             setUpCameraGingerbread(camera);
         } else {
-            camera.setPreviewCallback(mRenderer);
+            camera.setPreviewCallback(mRenderer);// TODO: 2017/9/12 机智的合并相机回调和渲染类
             camera.startPreview();
         }
         Rotation rotation = Rotation.NORMAL;
@@ -166,7 +168,7 @@ public class GPUImage {
 
     @TargetApi(11)
     private void setUpCameraGingerbread(final Camera camera) {
-        mRenderer.setUpSurfaceTexture(camera);
+        mRenderer.setUpSurfaceTexture(camera);// TODO: 2017/9/12 机智的合并相机回调和渲染类
     }
 
     /**
@@ -177,7 +179,7 @@ public class GPUImage {
      */
     public void setFilter(final GPUImageFilter filter) {
         mFilter = filter;
-        mRenderer.setFilter(mFilter);
+        mRenderer.setFilter(mFilter);// TODO: 2017/9/12 传递滤镜给渲染器
         requestRender();
     }
 
@@ -281,7 +283,7 @@ public class GPUImage {
      * @param bitmap the bitmap on which the current filter should be applied
      * @return the bitmap with filter applied
      */
-    public Bitmap getBitmapWithFilterApplied(final Bitmap bitmap) {
+    public Bitmap getBitmapWithFilterApplied(final Bitmap bitmap) {// TODO: 2017/9/12 不懂
         if (mGlSurfaceView != null) {
             mRenderer.deleteImage();
             mRenderer.runOnDraw(new Runnable() {
@@ -304,6 +306,7 @@ public class GPUImage {
             }
         }
 
+        // TODO: 2017/9/12 好像很牛逼的样子，多滤镜关键方法？
         GPUImageRenderer renderer = new GPUImageRenderer(mFilter);
         renderer.setRotation(Rotation.NORMAL,
                 mRenderer.isFlippedHorizontally(), mRenderer.isFlippedVertically());
@@ -336,6 +339,7 @@ public class GPUImage {
      * @param filters the filters which will be applied on the bitmap
      * @param listener the listener on which the results will be notified
      */
+    // TODO: 2017/9/12 多滤镜的相关处理？
     public static void getBitmapForMultipleFilters(final Bitmap bitmap,
             final List<GPUImageFilter> filters, final ResponseListener<Bitmap> listener) {
         if (filters.isEmpty()) {
