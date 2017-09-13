@@ -24,7 +24,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
-import jp.co.cyberagent.android.gpuimage.util.OpenGlUtils;
+import jp.co.cyberagent.android.gpuimage.util.GlUtils;
 import jp.co.cyberagent.android.gpuimage.util.Rotation;
 import jp.co.cyberagent.android.gpuimage.util.TextureRotationUtil;
 
@@ -45,7 +45,7 @@ public class GPUImageTwoInputFilter extends GPUImageFilter {
 
     public int mFilterSecondTextureCoordinateAttribute;
     public int mFilterInputTextureUniform2;
-    public int mFilterSourceTexture2 = OpenGlUtils.NO_TEXTURE;
+    public int mFilterSourceTexture2 = GlUtils.NO_TEXTURE;
     private ByteBuffer mTexture2CoordinatesBuffer;
     private Bitmap mBitmap;
 
@@ -81,12 +81,12 @@ public class GPUImageTwoInputFilter extends GPUImageFilter {
         }
         runOnDraw(new Runnable() {
             public void run() {
-                if (mFilterSourceTexture2 == OpenGlUtils.NO_TEXTURE) {
+                if (mFilterSourceTexture2 == GlUtils.NO_TEXTURE) {
                     if (bitmap == null || bitmap.isRecycled()) {
                         return;
                     }
                     GLES20.glActiveTexture(GLES20.GL_TEXTURE3);
-                    mFilterSourceTexture2 = OpenGlUtils.loadTexture(bitmap, OpenGlUtils.NO_TEXTURE, false);
+                    mFilterSourceTexture2 = GlUtils.loadTexture(bitmap, GlUtils.NO_TEXTURE, false);
                 }
             }
         });
@@ -108,7 +108,7 @@ public class GPUImageTwoInputFilter extends GPUImageFilter {
         GLES20.glDeleteTextures(1, new int[]{
                 mFilterSourceTexture2
         }, 0);
-        mFilterSourceTexture2 = OpenGlUtils.NO_TEXTURE;
+        mFilterSourceTexture2 = GlUtils.NO_TEXTURE;
     }
 
     @Override

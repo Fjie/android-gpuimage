@@ -108,7 +108,7 @@ public class GPUImageFilterTools {
     public static void showDialog(final Context context,
             final OnGpuImageFilterChosenListener listener) {
         final FilterList filters = new FilterList();
-        filters.addFilter("Me!Me!Me!", FilterType.DOUBLE);
+//        filters.addFilter("Me!Me!Me!", FilterType.DOUBLE);
         filters.addFilter("Contrast", FilterType.CONTRAST);
         filters.addFilter("Invert", FilterType.INVERT);
         filters.addFilter("Pixelation", FilterType.PIXELATION);
@@ -198,10 +198,19 @@ public class GPUImageFilterTools {
                     @Override
                     public void onClick(final DialogInterface dialog, final int item) {
                         listener.onGpuImageFilterChosenListener(
-                                createFilterForType(context, filters.filters.get(item)));
+//                                createFilterForType(context, filters.filters.get(item))
+                                doubleFilter(context, filters.filters.get(item))
+                        );
                     }
                 });
         builder.create().show();
+    }
+
+    private static GPUImageFilter doubleFilter(final Context context, final FilterType type){
+        List<GPUImageFilter> filters = new LinkedList<GPUImageFilter>();
+        filters.add(new DoubleFilter());
+        filters.add(createFilterForType(context,type));
+        return new GPUImageFilterGroup(filters);
     }
 
     private static GPUImageFilter createFilterForType(final Context context, final FilterType type) {

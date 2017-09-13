@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.util.LinkedList;
 
-import jp.co.cyberagent.android.gpuimage.util.OpenGlUtils;
+import jp.co.cyberagent.android.gpuimage.util.GlUtils;
 
 // TODO: 2017/9/12 滤镜基类
 public class GPUImageFilter {
@@ -79,7 +79,7 @@ public class GPUImageFilter {
     }
 
     public void onInit() {// TODO: 2017/9/12 初始化主体方法，GLSL配置、传参，子类定制化配置
-        mGLProgId = OpenGlUtils.loadProgram(mVertexShader, mFragmentShader);
+        mGLProgId = GlUtils.loadProgram(mVertexShader, mFragmentShader);
         mGLAttribPosition = GLES20.glGetAttribLocation(mGLProgId, "position");
         mGLUniformTexture = GLES20.glGetUniformLocation(mGLProgId, "inputImageTexture");
         mGLAttribTextureCoordinate = GLES20.glGetAttribLocation(mGLProgId,"inputTextureCoordinate");
@@ -119,7 +119,7 @@ public class GPUImageFilter {
         textureBuffer.position(0);
         GLES20.glVertexAttribPointer(mGLAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0,textureBuffer);
         GLES20.glEnableVertexAttribArray(mGLAttribTextureCoordinate);
-        if (textureId != OpenGlUtils.NO_TEXTURE) {
+        if (textureId != GlUtils.NO_TEXTURE) {
             // TODO: 2017/9/12 应用纹理
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId);

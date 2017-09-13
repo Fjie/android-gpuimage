@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
-import jp.co.cyberagent.android.gpuimage.util.OpenGlUtils;
+import jp.co.cyberagent.android.gpuimage.util.GlUtils;
 
 public class GPUImageToneCurveFilter extends GPUImageFilter {
     public static final String TONE_CURVE_FRAGMENT_SHADER = "" +
@@ -45,7 +45,7 @@ public class GPUImageToneCurveFilter extends GPUImageFilter {
             "     gl_FragColor = vec4(redCurveValue, greenCurveValue, blueCurveValue, textureColor.a);\n" +
             " }";
 
-    private int[] mToneCurveTexture = new int[]{OpenGlUtils.NO_TEXTURE};
+    private int[] mToneCurveTexture = new int[]{GlUtils.NO_TEXTURE};
     private int mToneCurveTextureUniformLocation;
 
     private PointF[] mRgbCompositeControlPoints;
@@ -93,7 +93,7 @@ public class GPUImageToneCurveFilter extends GPUImageFilter {
 
     @Override
     protected void onDrawArraysPre() {
-        if (mToneCurveTexture[0] != OpenGlUtils.NO_TEXTURE) {
+        if (mToneCurveTexture[0] != GlUtils.NO_TEXTURE) {
             GLES20.glActiveTexture(GLES20.GL_TEXTURE3);
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mToneCurveTexture[0]);
             GLES20.glUniform1i(mToneCurveTextureUniformLocation, 3);

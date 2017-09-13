@@ -38,7 +38,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import jp.co.cyberagent.android.gpuimage.GPUImageNativeLibrary;
-import jp.co.cyberagent.android.gpuimage.util.OpenGlUtils;
+import jp.co.cyberagent.android.gpuimage.util.GlUtils;
 import jp.co.cyberagent.android.gpuimage.util.Rotation;
 import jp.co.cyberagent.android.gpuimage.util.TextureRotationUtil;
 
@@ -156,7 +156,7 @@ public class GPUImageRenderer implements Renderer, PreviewCallback {
                     GPUImageNativeLibrary.YUVtoRBGA(data, previewSize.width, previewSize.height,
                             mGLRgbBuffer.array());// TODO: 2017/9/12 转码一波
                     // TODO: 2017/9/12 图像buf填装到OpenGL
-                    mGLTextureId = OpenGlUtils.loadTexture(mGLRgbBuffer, previewSize, mGLTextureId);
+                    mGLTextureId = GlUtils.loadTexture(mGLRgbBuffer, previewSize, mGLTextureId);
                     camera.addCallbackBuffer(data);// TODO: 2017/9/12 还给相机？
 
                     if (mImageWidth != previewSize.width) {
@@ -246,7 +246,7 @@ public class GPUImageRenderer implements Renderer, PreviewCallback {
                 }
 
                 // TODO: 2017/9/12 图片链接到纹理
-                mGLTextureId = OpenGlUtils.loadTexture(resizedBitmap != null ? resizedBitmap : bitmap, mGLTextureId, recycle);
+                mGLTextureId = GlUtils.loadTexture(resizedBitmap != null ? resizedBitmap : bitmap, mGLTextureId, recycle);
                 if (resizedBitmap != null) {
                     resizedBitmap.recycle();// TODO: 2017/9/12 图片给到OpenGL后可释放
                 }
