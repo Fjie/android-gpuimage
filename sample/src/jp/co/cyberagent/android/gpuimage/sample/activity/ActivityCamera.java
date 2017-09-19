@@ -213,12 +213,12 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
     }
 
     private void switchFilterTo(final GPUImageFilter filter) {
-        if (mFilter == null
-                || (filter != null && !mFilter.getClass().equals(filter.getClass()))) {
+        // TODO: 2017/9/13 大大滴bug，滤镜组类名一样导致不能切换
+//        if (mFilter == null || (filter != null && !mFilter.getClass().equals(filter.getClass()))) {
             mFilter = filter;
             mGPUImage.setFilter(mFilter);
             mFilterAdjuster = new FilterAdjuster(mFilter);
-        }
+//        }
     }
 
     @Override

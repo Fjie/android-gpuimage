@@ -151,7 +151,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     // TODO: 2017/9/13 复写onDraw实现多滤镜
     public void onDraw(final int textureId, final FloatBuffer cubeBuffer,
                        final FloatBuffer textureBuffer) {
-        runPendingOnDrawTasks();
+        runPendingOnDrawTasks();// TODO: 2017/9/13 先处理全家桶
         if (!isInitialized() || mFrameBuffers == null || mFrameBufferTextures == null) {
             return;
         }
@@ -186,11 +186,9 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     public List<GPUImageFilter> getFilters() {
         return mFilters;
     }
-
     public List<GPUImageFilter> getMergedFilters() {
         return mMergedFilters;
     }
-
     @Override
     public void onInit() {
         super.onInit();
@@ -204,9 +202,12 @@ public class GPUImageFilterGroup extends GPUImageFilter {
         for (GPUImageFilter filter : mFilters) {
             filter.destroy();
         }
+        // FIXME: 2017/9/13 试试
+        for (GPUImageFilter filter : mMergedFilters){
+            filter.destroy();
+        }
         super.onDestroy();
     }
-
     private void destroyFramebuffers() {
         if (mFrameBufferTextures != null) {
             GLES20.glDeleteTextures(mFrameBufferTextures.length, mFrameBufferTextures, 0);
@@ -217,7 +218,6 @@ public class GPUImageFilterGroup extends GPUImageFilter {
             mFrameBuffers = null;
         }
     }
-
     public void addFilter(GPUImageFilter aFilter) {
         if (aFilter == null) {
             return;

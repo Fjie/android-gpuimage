@@ -59,7 +59,7 @@ public class GPUImageFilter {
     protected int mGLAttribTextureCoordinate;// TODO: 2017/9/12 纹理坐标变量句柄
     protected int mOutputWidth;
     protected int mOutputHeight;
-    private boolean mIsInitialized;// TODO: 2017/9/12 可绘制开关
+    protected boolean mIsInitialized;// TODO: 2017/9/12 可绘制开关
 
     public GPUImageFilter() {
         this(NO_FILTER_VERTEX_SHADER, NO_FILTER_FRAGMENT_SHADER);
