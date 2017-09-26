@@ -30,18 +30,18 @@ public class GPUImageSwirlFilter extends GPUImageFilter {
             "\n" +
             "uniform sampler2D inputImageTexture;\n" +
             "\n" +
-            "uniform highp vec2 center;\n" +
-            "uniform highp float radius;\n" +
-            "uniform highp float angle;\n" +
+            "uniform highp vec2 center;\n" +// TODO: 2017/9/19 传入中心点
+            "uniform highp float radius;\n" +// TODO: 2017/9/19 传入半径
+            "uniform highp float angle;\n" +// TODO: 2017/9/19 传入角度
             "\n" +
             "void main()\n" +
             "{\n" +
             "highp vec2 textureCoordinateToUse = textureCoordinate;\n" +
-            "highp float dist = distance(center, textureCoordinate);\n" +
-            "if (dist < radius)\n" +
+            "highp float dist = distance(center, textureCoordinate);\n" + // TODO: 2017/9/19 当前点和中心的距离
+            "if (dist < radius)\n" + // TODO: 2017/9/19 如果小于半径，做操作
             "{\n" +
-            "textureCoordinateToUse -= center;\n" +
-            "highp float percent = (radius - dist) / radius;\n" +
+            "textureCoordinateToUse -= center;\n" + // TODO: 2017/9/19 减去中心
+            "highp float percent = (radius - dist) / radius;\n" + // TODO: 2017/9/20 求个比值
             "highp float theta = percent * percent * angle * 8.0;\n" +
             "highp float s = sin(theta);\n" +
             "highp float c = cos(theta);\n" +

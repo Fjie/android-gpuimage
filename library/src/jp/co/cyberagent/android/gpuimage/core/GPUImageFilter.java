@@ -27,6 +27,8 @@ import java.util.LinkedList;
 
 import jp.co.cyberagent.android.gpuimage.util.GlUtils;
 
+import static jp.co.cyberagent.android.gpuimage.core.GLToolbox.checkGlError;
+
 // TODO: 2017/9/12 滤镜基类
 public class GPUImageFilter {
     public static final String NO_FILTER_VERTEX_SHADER = "" +
@@ -80,9 +82,13 @@ public class GPUImageFilter {
 
     public void onInit() {// TODO: 2017/9/12 初始化主体方法，GLSL配置、传参，子类定制化配置
         mGLProgId = GlUtils.loadProgram(mVertexShader, mFragmentShader);
+        checkGlError("loadProgram");
         mGLAttribPosition = GLES20.glGetAttribLocation(mGLProgId, "position");
+        checkGlError("vertex attribute setup");
         mGLUniformTexture = GLES20.glGetUniformLocation(mGLProgId, "inputImageTexture");
+        checkGlError("glActiveTexture");
         mGLAttribTextureCoordinate = GLES20.glGetAttribLocation(mGLProgId,"inputTextureCoordinate");
+        checkGlError("glActiveTexture");
         mIsInitialized = true;
     }
 
@@ -115,6 +121,7 @@ public class GPUImageFilter {
         cubeBuffer.position(0);
         GLES20.glVertexAttribPointer(mGLAttribPosition, 2, GLES20.GL_FLOAT, false, 0, cubeBuffer);
         GLES20.glEnableVertexAttribArray(mGLAttribPosition);
+        checkGlError("vertex attribute setup");
         // TODO: 2017/9/12 处理纹理顶点
         textureBuffer.position(0);
         GLES20.glVertexAttribPointer(mGLAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0,textureBuffer);
@@ -125,11 +132,13 @@ public class GPUImageFilter {
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId);
             GLES20.glUniform1i(mGLUniformTexture, 0);
         }
+        checkGlError("glActiveTexture");
         onDrawArraysPre();
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
         GLES20.glDisableVertexAttribArray(mGLAttribPosition);
         GLES20.glDisableVertexAttribArray(mGLAttribTextureCoordinate);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+        checkGlError("glActiveTexture");
     }
 
     protected void onDrawArraysPre() {}

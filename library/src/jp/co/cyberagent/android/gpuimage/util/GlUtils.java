@@ -25,6 +25,8 @@ import android.util.Log;
 
 import java.nio.IntBuffer;
 
+import static jp.co.cyberagent.android.gpuimage.core.GLToolbox.checkGlError;
+
 public class GlUtils {
     public static final int NO_TEXTURE = -1;
 
@@ -88,6 +90,7 @@ public class GlUtils {
         GLES20.glShaderSource(iShader, strSource);
         GLES20.glCompileShader(iShader);
         GLES20.glGetShaderiv(iShader, GLES20.GL_COMPILE_STATUS, compiled, 0);
+        checkGlError("loadShader");
         if (compiled[0] == 0) {
             Log.d("Load Shader Failed", "Compilation\n" + GLES20.glGetShaderInfoLog(iShader));
             return 0;
@@ -112,19 +115,22 @@ public class GlUtils {
         }
 
         iProgId = GLES20.glCreateProgram();
-
         GLES20.glAttachShader(iProgId, iVShader);
+        checkGlError("glAttachShader");
         GLES20.glAttachShader(iProgId, iFShader);
-
+        checkGlError("glAttachShader");
         GLES20.glLinkProgram(iProgId);
-
+        checkGlError("glAttachShader");
         GLES20.glGetProgramiv(iProgId, GLES20.GL_LINK_STATUS, link, 0);
+        checkGlError("glAttachShader");
         if (link[0] <= 0) {
             Log.d("Load Program", "Linking Failed");
             return 0;
         }
         GLES20.glDeleteShader(iVShader);
+        checkGlError("glAttachShader");
         GLES20.glDeleteShader(iFShader);
+        checkGlError("glAttachShader");
         return iProgId;
     }
 

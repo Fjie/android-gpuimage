@@ -16,13 +16,6 @@
 
 package jp.co.cyberagent.android.gpuimage.sample.activity;
 
-import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
-import jp.co.cyberagent.android.gpuimage.core.GPUImageView;
-import jp.co.cyberagent.android.gpuimage.core.GPUImageView.OnPictureSavedListener;
-import jp.co.cyberagent.android.gpuimage.sample.GPUImageFilterTools;
-import jp.co.cyberagent.android.gpuimage.sample.GPUImageFilterTools.FilterAdjuster;
-import jp.co.cyberagent.android.gpuimage.sample.GPUImageFilterTools.OnGpuImageFilterChosenListener;
-import jp.co.cyberagent.android.gpuimage.sample.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -32,6 +25,14 @@ import android.view.View.OnClickListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
+
+import jp.co.cyberagent.android.gpuimage.core.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageView;
+import jp.co.cyberagent.android.gpuimage.core.GPUImageView.OnPictureSavedListener;
+import jp.co.cyberagent.android.gpuimage.sample.GPUImageFilterTools;
+import jp.co.cyberagent.android.gpuimage.sample.GPUImageFilterTools.FilterAdjuster;
+import jp.co.cyberagent.android.gpuimage.sample.GPUImageFilterTools.OnGpuImageFilterChosenListener;
+import jp.co.cyberagent.android.gpuimage.sample.R;
 
 public class ActivityGallery extends Activity implements OnSeekBarChangeListener,
         OnClickListener, OnPictureSavedListener {
@@ -138,5 +139,9 @@ public class ActivityGallery extends Activity implements OnSeekBarChangeListener
 
     private void handleImage(final Uri selectedImage) {
         mGPUImageView.setImage(selectedImage);
+    }
+
+    public void onSurfaceViewClick(View view) {
+        mGPUImageView.requestRender();
     }
 }

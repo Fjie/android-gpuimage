@@ -103,6 +103,9 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageVignetteFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageWeakPixelInclusionFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageWhiteBalanceFilter;
 import jp.co.cyberagent.android.gpuimage.filter.custom.DoubleFilter;
+import jp.co.cyberagent.android.gpuimage.filter.custom.DrosteFilter;
+import jp.co.cyberagent.android.gpuimage.filter.custom.FakeAIFilter;
+import jp.co.cyberagent.android.gpuimage.filter.custom.FireFilter;
 import jp.co.cyberagent.android.gpuimage.filter.custom.TransitionFilter;
 import jp.co.cyberagent.android.gpuimage.util.GPUImageSobelEdgeDetection;
 
@@ -110,7 +113,11 @@ public class GPUImageFilterTools {
     public static void showDialog(final Context context,
                                   final OnGpuImageFilterChosenListener listener) {
         final FilterList filters = new FilterList();
-        filters.addFilter("Me!Me!Me!", FilterType.TEST);
+        filters.addFilter("TEST", FilterType.TEST);
+        filters.addFilter("TEST2", FilterType.TEST2);
+        filters.addFilter("TEST3", FilterType.TEST3);
+        filters.addFilter("TEST4", FilterType.TEST4);
+        filters.addFilter("TEST5", FilterType.TEST5);
         filters.addFilter("Contrast", FilterType.CONTRAST);
         filters.addFilter("Invert", FilterType.INVERT);
         filters.addFilter("Grouped", FilterType.FILTER_GROUP);
@@ -216,6 +223,18 @@ public class GPUImageFilterTools {
         switch (type) {
             case TEST:
                 return new TransitionFilter();
+            case TEST2:
+                FakeAIFilter fakeAIFilter = new FakeAIFilter();
+                fakeAIFilter.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.pic03));
+                return fakeAIFilter;
+            case TEST3:
+                DoubleFilter doubleFilter = new DoubleFilter();
+                doubleFilter.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.pic02));
+                return doubleFilter;
+            case TEST4:
+                return new DrosteFilter(context);
+            case TEST5:
+                return new FireFilter(context);
             case FILTER_GROUP:
                 List<GPUImageFilter> filters = new LinkedList<GPUImageFilter>();
                 filters.add(new GPUImageContrastFilter());
@@ -415,7 +434,7 @@ public class GPUImageFilterTools {
     }
 
     private enum FilterType {
-        TEST, CONTRAST, GRAYSCALE, SHARPEN, SEPIA, SOBEL_EDGE_DETECTION, THREE_X_THREE_CONVOLUTION, FILTER_GROUP, FILTER_GROUP2, EMBOSS, POSTERIZE, GAMMA, BRIGHTNESS, INVERT, HUE, PIXELATION,
+        TEST,TEST2,TEST3, TEST4,TEST5, CONTRAST, GRAYSCALE, SHARPEN, SEPIA, SOBEL_EDGE_DETECTION, THREE_X_THREE_CONVOLUTION, FILTER_GROUP, FILTER_GROUP2, EMBOSS, POSTERIZE, GAMMA, BRIGHTNESS, INVERT, HUE, PIXELATION,
         SATURATION, EXPOSURE, HIGHLIGHT_SHADOW, MONOCHROME, OPACITY, RGB, WHITE_BALANCE, VIGNETTE, TONE_CURVE, BLEND_COLOR_BURN, BLEND_COLOR_DODGE, BLEND_DARKEN, BLEND_DIFFERENCE,
         BLEND_DISSOLVE, BLEND_EXCLUSION, BLEND_SOURCE_OVER, BLEND_HARD_LIGHT, BLEND_LIGHTEN, BLEND_ADD, BLEND_DIVIDE, BLEND_MULTIPLY, BLEND_OVERLAY, BLEND_SCREEN, BLEND_ALPHA,
         BLEND_COLOR, BLEND_HUE, BLEND_SATURATION, BLEND_LUMINOSITY, BLEND_LINEAR_BURN, BLEND_SOFT_LIGHT, BLEND_SUBTRACT, BLEND_CHROMA_KEY, BLEND_NORMAL, LOOKUP_AMATORKA,
